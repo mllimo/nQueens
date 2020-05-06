@@ -4,6 +4,7 @@
  * las fichas del ajedrez junto al tablero.
  * @copyright Antonio Raúl Guijarro Contreras 2020
  * @since 01.05.2020
+ * @module nQueens
 */
 
 import Board from './Board.js';
@@ -137,19 +138,54 @@ function isSafe(row, colum, board) {
   if (board.elements[board.translate(row, colum)].element != null) {
     return false;
   }
-  // Comprobamos las filas
+
+  if (!isSafeRow(row, colum, board)) return false;        // Comprobamos las filas
+  if (!isSafeColumn(row, colum, board)) return false;     // Comprobamos las columnas
+  if (!isSafeDiagonal(row, colum, board)) return false;   // Comprobamos las diagonales | No muy eficientemente
+
+  return true;
+}
+
+/**
+ * Compruba si la nueva posición es compatible con las filas
+ * @param {Numer} colum Columna donde podría estar la nueva reina
+ * @param {Numer} row Fila donde podría estar la nueva reina
+ * @param {Board} board Contexto del tablero
+ * @return {Boolean} True si es seguro : false
+ */
+function isSafeRow(row, colum, board) {
   for (let i = 0; i < board.verticalBoxes; i++) {
     if (board.elements[board.translate(i, colum)].element != null) {
       return false;
     }
   }
-  // Comprobamos las columnas
+  return true;
+}
+
+/**
+ * Compruba si la nueva posición es compatible con las columnas
+ * @param {Numer} colum Columna donde podría estar la nueva reina
+ * @param {Numer} row Fila donde podría estar la nueva reina
+ * @param {Board} board Contexto del tablero
+ * @return {Boolean} True si es seguro : false
+ */
+function isSafeColumn(row, colum, board) {
   for (let i = 0; i < board.horizontalBoxes; i++) {
     if (board.elements[board.translate(row, i)].element != null) {
       return false;
     }
   }
-  // Comprobamos las diagonales | No muy eficientemente
+  return true;
+}
+
+/**
+ * Compruba si la nueva posición es compatible con las diagonales
+ * @param {Numer} colum Columna donde podría estar la nueva reina
+ * @param {Numer} row Fila donde podría estar la nueva reina
+ * @param {Board} board Contexto del tablero
+ * @return {Boolean} True si es seguro : false
+ */
+function isSafeDiagonal(row, colum, board) {
   for (let i = 0; i < board.verticalBoxes; i++) {
     for (let j = 0; j < board.horizontalBoxes; j++) {
       if (board.elements[board.translate(i, j)].element != null) {
