@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guijarro Contreras Antonio Raúl</title>
+    <link rel="stylesheet" href="../test-js-css/mocha.css" />
+    <script src="../test-js-css/mocha.js"></script>
+    <script src="../test-js-css/chai.js"></script>
+  </head>
+  <body onload="mocha.run()">
+    <h1>Antonio Raúl Guijarro Contreras</h1>
+    <div id="mocha"></div>
+    <script>
+      mocha.setup("bdd");
+    </script>
+    <!-- load your test files here -->
+    <script def type="module" src="../test/tests.js"></script>
+    <canvas id="canvas" width="1280" height="720"></canvas>
+  </body>
+</html>

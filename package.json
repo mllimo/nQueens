@@ -1,0 +1,37 @@
+{
+  "name": "nqueens-problem",
+  "version": "0.0.0",
+  "description": "nqueens problem and 8 queens problem",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "nyc mocha src/test/*.js --require @babel/register",
+    "coverage": "nyc --reporter html npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "githttps://github.com/mllim0/nQueens.git"
+  },
+  "author": "Antonio Raúl Guijarro Contreras <antoniorgc@hotmail.es> (https://github.com/mllim0)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mllim0/nQueens.git/issues"
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "chai-sorted": "^0.2.0",
+    "jsdoc": "^3.6.4",
+    "mocha": "^7.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/register": "^7.9.0",
+    "nyc": "^15.0.1"
+  }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>N queens problem</title>
+
+    <link rel="stylesheet" type="text/css" href="../style/chess.css"/>
+    <script type="module" src="../scripts/8queens.js" defer></script>
+  </head>
+  <body>
+
+    <br><br><br>
+
+    <div class="chess-interface">
+      <div id="ui-interface">
+        <label id="queensClasic"><input type="checkbox" id="8queensClasic"/>ON: N queens | OFF:  8 queens</label>
+        <hr>
+        <button type="button" id="solve">Generate solution</button>
+        <br>
+        <button type="button" id="next-solution">Next solution</button>
+        <button type="button" id="chessGame">Show chess pieces</button>
+        <br><br>
+        <label id="queensClasic"><input type="number" value=8 id="queens" min="0" max="100"/><br>Queens number</label>
+      </div>
+
+      <canvas id="canvas" height= 700 width= 700></canvas>
+
+      <div id="display-steps">
+        <nav class="moves">
+          <ol class="moves" id="steps">
+            
+          </ol>
+      </nav>
+      </div>
+    </div>
+
+    <footer>
+      <h3>Antonio Raúl Guijarro Contreras</h3>
+      <h3>Interactive application programming</h3>
+      <h3>Computer Engineering 3º 2019/2020</h3>
+    </footer>
+
+  </body>
+</html>

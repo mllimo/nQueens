@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: 8queens.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: 8queens.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Antonio Raúl Guijarro Contreras &lt;alu0101100494@ull.edu.es>
+ * @file Script principal del programa que simulará el problemas de las ocho reinas y además dibuajará
+ * las fichas del ajedrez junto al tablero.
+ * @copyright Antonio Raúl Guijarro Contreras 2020
+ * @since 01.05.2020
+*/
+
+import Board from './Board.js';
+import Layers from './Layers.js';
+import chess from '../../data/json/chess.js';
+
+//TODO:
+
+
+// Atributos HTML
+let canvas;
+let ctx;
+let check;
+let solveButton;
+let nextSolutionButton;
+let chessButton;
+
+//  Atriburos lógicos
+let queen = new Image();
+queen.src = '../../data/chess/reinaNegro.png';
+let layers = new Layers();
+let NQUEENS;
+let counter = 0;
+let nSolution = 0;
+let img = [];                                   // Cargamos las imagenes en la cache
+let loadimages = 0;                             // Podria ser util como flag
+let chessPaternColor = ['Moccasin', 'Peru'];
+
+if (document != null) {
+  // Asignación
+  canvas = document.getElementById('canvas');
+  ctx = canvas.getContext('2d');
+  solveButton = document.getElementById('solve');
+  nextSolutionButton = document.getElementById('next-solution');
+  chessButton = document.getElementById('chessGame');
+  check = document.getElementById('8queensClasic');
+
+  // Eventos
+  nextSolutionButton.addEventListener('click', setNext);
+  solveButton.addEventListener('click', main);
+  window.addEventListener('load', start);
+  chessButton.addEventListener('click', showChess);
+}
+
+/**
+ * Ejecutará la función principal del script: Generar una solucíon de 8 reinas
+ */
+function main() {
+  counter = 0;
+  nSolution = 0;
+  queens();
+}
+
+/**
+ * Cada vez que se pulse el botón de "Siguiente solución" mostrará la solución 
+ * siguiente a la anterior
+ */
+function setNext() {
+  counter++;
+  queens();
+}
+
+
+/**
+ * Nada más cargar la página se ejecutará esta función
+ */
+function start() {
+  preloadImages();
+  let board = new Board(8, 8);
+  let paternColor = board.makeAsimetricPatern(chessPaternColor);
+  board.build(canvas.width, canvas.height, paternColor);
+  board.draw(ctx);
+}
+
+/**
+ * Inicializa el problema de las N reinas recursivo
+ */
+async function queens() {
+  if (check.checked) {
+    // Generalizado
+    NQUEENS = parseInt(document.getElementById('queens').value);
+  } else {
+    // 8 reinas clásico
+    NQUEENS = 8;
+  }
+
+  let board = new Board(NQUEENS, NQUEENS);
+  let paternColor = board.makeAsimetricPatern(chessPaternColor);
+  board.build(canvas.width, canvas.height, paternColor);
+  await nQueensProblem(board);
+  nSolution = 0;
+}
+
+/**
+ * Generalización del problema de las 8 reinas
+ * @param {Board} board Tablero con el que trabajar. Tiene que estar instanciado
+ * @param {Number} numberOfQueens Número de reinas insertadas en el tablero
+ * @param {Number} maxQueens Número objetivo de reinas en el tablero
+ */
+async function nQueensProblem(board, numberOfQueens = 0, maxQueens = NQUEENS) {
+  let exitFlag = false;
+  if(numberOfQueens === maxQueens) {
+    if (nSolution == counter) {
+      board.draw(ctx);
+      await showSteps(board);
+      return true;                    // Flag para no continuar y optimizar la función "paso a paso"
+    }
+    nSolution++;
+    return false;
+  }
+
+  for(let i = 0; i &lt; maxQueens &amp;&amp; !exitFlag; i++){
+    if(isSafe(i, numberOfQueens, board)){
+      board.elements[board.translate(i, numberOfQueens)].element = queen;
+      exitFlag = await nQueensProblem(board, numberOfQueens + 1);
+      board.elements[board.translate(i, numberOfQueens)].element = null;
+    }
+  }
+  return exitFlag;
+}
+
+/**
+ * Compruba si es posible insertar una nueva reina
+ * @param {Numer} colum Columna donde podría estar la nueva reina
+ * @param {Numer} row Fila donde podría estar la nueva reina
+ * @param {Board} board Contexto del tablero
+ * @return {Boolean} True si es posible insertar la nueva reina : false
+ */
+function isSafe(row, colum, board) {
+  // Comprobamos que la casilla no esté ocupada
+  if (board.elements[board.translate(row, colum)].element != null) {
+    return false;
+  }
+  // Comprobamos las filas
+  for (let i = 0; i &lt; board.verticalBoxes; i++) {
+    if (board.elements[board.translate(i, colum)].element != null) {
+      return false;
+    }
+  }
+  // Comprobamos las columnas
+  for (let i = 0; i &lt; board.horizontalBoxes; i++) {
+    if (board.elements[board.translate(row, i)].element != null) {
+      return false;
+    }
+  }
+  // Comprobamos las diagonales | No muy eficientemente
+  for (let i = 0; i &lt; board.verticalBoxes; i++) {
+    for (let j = 0; j &lt; board.horizontalBoxes; j++) {
+      if (board.elements[board.translate(i, j)].element != null) {
+        if (i - j === row - colum || i + j === row + colum ||
+            j - colum === i - row || j - colum === row - i) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+/**
+ * Muestra un tablero del ajedrez por pantalla
+ */
+function showChess() {
+  let board = new Board(8, 8);
+  let paternColor = board.makeAsimetricPatern(chessPaternColor);
+  board.build(canvas.width, canvas.height, paternColor);
+  board.importElements(chess);
+  board.draw(ctx);
+}
+
+/**
+ * Muestra las posiciones de las reinas dentro de una lista ordenada en el 
+ * HTML
+ * @param {Board} board Tablero
+ */
+function showSteps(board) {
+  let i = 0;
+  let j = 0;
+  let isMatch = false;
+  let exist = true;
+  let parentTag = document.getElementById('steps');
+
+  // Eliminamos las anteriores
+  let counter = 0;
+  let auxElement;
+  while (auxElement = document.getElementById('step' + counter++)) {
+    auxElement.remove();
+  }
+
+  for (let queen = 0; queen &lt; NQUEENS; queen++) {
+    //  Mostramos 
+    let li = document.getElementById('step' + queen);
+    if (li === null) {
+      exist = false;
+      li = document.createElement('li');
+      li.setAttribute('id', 'step' + queen);
+    }
+    //  Buscamos la reina queen
+    for (; i &lt; board.verticalBoxes &amp;&amp; !isMatch; i++) {
+      for (j = 0; j &lt; board.horizontalBoxes &amp;&amp; !isMatch; j++) {
+        if (board.elements[board.translate(i,j)].element != null) {
+          if (!exist) {
+            li.appendChild(document.createTextNode(board.translate(i,j)));
+          } else {
+            document.getElementById('step' + queen).innerHTML = board.translate(i,j);
+          }
+          isMatch = true;
+        }
+      }
+    }
+    isMatch = false;
+    parentTag.appendChild(li);
+  }
+}
+
+/**
+ * Carga en el cache las imagenes a cargar posteriormente
+ */
+function preloadImages() {
+  for (const key in chess) {
+    img.push(new Image());
+    img[img.length - 1].src = chess[key].src;
+    img[img.length - 1].addEventListener("load", function () {loadimages++;}, true);
+  }
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Board.html">Board</a></li><li><a href="Box.html">Box</a></li><li><a href="Layers.html">Layers</a></li><li><a href="Line.html">Line</a></li><li><a href="Piece.html">Piece</a></li><li><a href="Point.html">Point</a></li><li><a href="Queen.html">Queen</a></li><li><a href="Rectangle.html">Rectangle</a></li><li><a href="Shape.html">Shape</a></li><li><a href="Vector2.html">Vector2</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isSafe">isSafe</a></li><li><a href="global.html#main">main</a></li><li><a href="global.html#nQueensProblem">nQueensProblem</a></li><li><a href="global.html#preloadImages">preloadImages</a></li><li><a href="global.html#queens">queens</a></li><li><a href="global.html#setNext">setNext</a></li><li><a href="global.html#showChess">showChess</a></li><li><a href="global.html#showSteps">showSteps</a></li><li><a href="global.html#start">start</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat May 02 2020 18:38:56 GMT+0100 (Western European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

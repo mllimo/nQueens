@@ -1,0 +1,116 @@
+
+body {
+  background-color: rgb(233, 233, 233);
+  font-family:Arial;
+}
+
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+
+footer {
+  width: 100vw;
+  display: block;
+  justify-content: center;
+  position: absolute;
+  bottom: 0 !important;
+  background-color: snow;
+  box-shadow: 1px 1px 10px 5px #aaaaaa;
+}
+
+footer > * {
+  display: inline-block;
+  justify-content: center;
+  margin-left: 12rem;
+}
+
+hr {
+  border-top: 4px solid #555555;
+  border-radius: 2px;
+}
+
+
+.chess-interface {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+}
+
+#ui-interface {
+  display: block;
+  text-align: center;
+  border-radius: 10px;
+  height: 20em;
+  width: 20em;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin: 30px;                         /* Margen respecto a otros elementos*/
+  background: white;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+#display-steps {
+  display: block;
+  border-radius: 10px;
+  height: 10em;
+  width: 20em;
+  margin: 30px;                         /* Margen respecto a otros elementos*/
+  background: white;
+  box-shadow: 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.moves {
+  height: 100%; width:100%;
+  overflow:hidden; overflow-y:scroll;
+}
+
+canvas {
+  height: 700px;
+  width: 700px;
+}
+
+nav.navigation-bar {
+  display: block;
+}
+
+nav.navigation-bar ul.navigation-bar {
+  list-style: none;   /* Quitamos el estilo de la lista*/
+  overflow: hidden;   /* Limpiamos errores de float */
+}
+
+nav.navigation-bar ul.navigation-bar li.navigation-bar {
+  float: left;                      /**/
+  font-family: Arial, sans-serif;   /* Tipo de fuente a utilizar*/
+  font-size: 100%;                  /* Tamaño de la fuente de los elementos de la lista*/
+}
+
+nav.navigation-bar ul.navigation-bar li.navigation-bar a {
+  display: block;           /* Convertimos los elementos a en elementos bloque para manipular el padding */
+  padding: 20px;            /* Separación entre elementos */
+  color: black;    /* Color de la fuente*/
+  text-decoration: none;    /* Quitar las propiedades por defecto de los links*/
+}
+
+button {
+  margin: 5%;
+  box-shadow:inset 0px 1px 0px 0px white;
+  background:linear-gradient(to bottom, white 5%, #e9e9e9 100%);
+  background-color:white;
+  border-radius:6px;
+  
+  display:inline-block;
+  cursor:pointer;
+  color:#666666;
+  font-size:15px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px white;
+}
