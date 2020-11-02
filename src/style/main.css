@@ -96,3 +96,7 @@ canvas {
   width: 2000px; /* you can use % */
   height: auto;
 }
+
+.white-font {
+  color: white;
+}
