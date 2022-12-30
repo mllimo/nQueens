@@ -23,7 +23,7 @@
     "chai": "^4.2.0",
     "chai-sorted": "^0.2.0",
     "jsdoc": "^3.6.4",
-    "mocha": "^7.1.1"
+    "mocha": "^10.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
